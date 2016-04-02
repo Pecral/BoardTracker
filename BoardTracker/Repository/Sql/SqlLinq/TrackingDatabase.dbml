@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Dev" Class="TrackingDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=STEFAN\DEV;Initial Catalog=Dev;Integrated Security=True" SettingsObjectName="DevTracker.Properties.Settings" SettingsPropertyName="DevConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Author" Member="Authors">
+    <Type Name="Author">
+      <Column Name="AuthorId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Lastname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="Author_Profile" Member="Profiles" ThisKey="AuthorId" OtherKey="AuthorId" Type="Profile" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Website" Member="Websites">
+    <Type Name="Website">
+      <Column Name="WebsiteId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Website_Profile" Member="Profiles" ThisKey="WebsiteId" OtherKey="WebsiteId" Type="Profile" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Profile" Member="Profiles">
+    <Type Name="Profile">
+      <Column Name="ProfileId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AuthorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WebsiteId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TemplateKey" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProfileUrl" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="Profile_Post" Member="Posts" ThisKey="ProfileId" OtherKey="ProfileId" Type="Post" />
+      <Association Name="Author_Profile" Member="Author" ThisKey="AuthorId" OtherKey="AuthorId" Type="Author" IsForeignKey="true" />
+      <Association Name="Website_Profile" Member="Website" ThisKey="WebsiteId" OtherKey="WebsiteId" Type="Website" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Post" Member="Posts">
+    <Type Name="Post">
+      <Column Name="PostId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProfileId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PostingDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ThreadTitle" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="PostLink" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Forum" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="ForumLink" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Association Name="Profile_Post" Member="Profile" ThisKey="ProfileId" OtherKey="ProfileId" Type="Profile" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
