@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.Repository;
-using DevTracker.Repository.Sql;
-using DevTracker.Repository.Xml;
+using BoardTracker.Repository.Sql;
 
-namespace DevTracker
+namespace BoardTracker.Repository
 {
     public class RepositoryHandler
     {

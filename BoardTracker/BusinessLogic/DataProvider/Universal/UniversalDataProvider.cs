@@ -5,13 +5,12 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using BoardTracker.BusinessLogic.Selector;
+using BoardTracker.Configuration.Model;
+using BoardTracker.Model;
 using CsQuery;
-using DevTracker.BusinessLogic.Selector;
-using DevTracker.Configuration;
-using DevTracker.Configuration.Model;
-using DevTracker.Model;
 
-namespace DevTracker.BusinessLogic.DataProvider.Universal
+namespace BoardTracker.BusinessLogic.DataProvider.Universal
 {
     public class UniversalDataProvider : IDataProvider
     {

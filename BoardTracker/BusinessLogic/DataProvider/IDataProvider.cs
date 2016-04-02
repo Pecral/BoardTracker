@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.Configuration.Model;
-using DevTracker.Model;
+﻿using System.Collections.Generic;
+using BoardTracker.Configuration.Model;
+using BoardTracker.Model;
 
-namespace DevTracker.BusinessLogic.DataProvider
+namespace BoardTracker.BusinessLogic.DataProvider
 {
     public interface IDataProvider
     {

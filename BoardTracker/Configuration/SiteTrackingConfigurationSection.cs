@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
+using BoardTracker.BusinessLogic;
+using BoardTracker.BusinessLogic.DataProvider;
+using BoardTracker.BusinessLogic.Selector;
+using BoardTracker.Configuration.Model;
+using BoardTracker.Model;
 using CsQuery.ExtensionMethods.Internal;
-using DevTracker.BusinessLogic;
-using DevTracker.BusinessLogic.DataProvider;
-using DevTracker.BusinessLogic.Selector;
-using DevTracker.Configuration.Model;
-using DevTracker.Model;
 
-namespace DevTracker.Configuration
+namespace BoardTracker.Configuration
 {
 
     public class SiteTrackingConfigurationSection : IConfigurationSectionHandler
@@ -31,16 +29,16 @@ namespace DevTracker.Configuration
 
             List<TrackingConfiguration> configs = new List<TrackingConfiguration>();
 
-            Console.WriteLine("select tracking configuration nodes");
+            Console.WriteLine("Select tracking configuration nodes..");
             XmlNodeList trackingProfileConfigurations = section.SelectNodes("trackingConfiguration");
             
-            Console.WriteLine("iterate through configs");
+            Console.WriteLine("Iterate through configs..");
             foreach (XmlNode configNode in trackingProfileConfigurations)
             {
                 TrackingConfiguration config = new TrackingConfiguration();
                 configs.Add(config);
 
-                Console.WriteLine("read name-value properties");
+                Console.WriteLine("Read name-value properties..");
                 Dictionary<string, string> attr = new Dictionary<string, string>();
                 attr.AddRange(configNode.SelectNodes("add")
                     .Cast<XmlNode>()
@@ -50,14 +48,14 @@ namespace DevTracker.Configuration
                                 x.Attributes["value"].InnerText))
                     .ToArray());
 
-                Console.WriteLine("create new website config");
+                Console.WriteLine("Create new website config..");
                 var webConfig = new WebsiteConfiguration();
                 config.WebsiteConfiguration = webConfig;
 
-                Console.WriteLine("set the website that we want to track");
+                Console.WriteLine("Set the website that we want to track..");
                 config.WebsiteConfiguration.Website = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.Website), StringComparison.CurrentCultureIgnoreCase)).Value;
 
-                Console.WriteLine("set website config");
+                Console.WriteLine("Set website's url and history template..");
                 webConfig.WebsiteUrl = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.WebsiteUrl), StringComparison.CurrentCultureIgnoreCase)).Value;
                 webConfig.PostHistoryTemplate = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.PostHistoryTemplate), StringComparison.CurrentCultureIgnoreCase)).Value;
 
@@ -73,27 +71,27 @@ namespace DevTracker.Configuration
                     webConfig.CheckLastXDaysForUpdates = Int32.Parse(attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.CheckLastXDaysForUpdates), StringComparison.CurrentCultureIgnoreCase)).Value);
                 }
 
-                Console.WriteLine("set pagination type");
+                Console.WriteLine("Set pagination type..");
                 string paginationTypeConfig = attr.FirstOrDefault(x => x.Key == nameof(webConfig.PaginationType).ToLower()).Value;
                 webConfig.PaginationType = (PaginationType)Enum.Parse(typeof(PaginationType), paginationTypeConfig, true);
 
-                Console.WriteLine("set tracker type");
+                Console.WriteLine("Set tracker type..");
                 string trackerType = attr.FirstOrDefault(x => x.Key == nameof(webConfig.DataProviderType).ToLower()).Value ?? "";
                 DataProviderType type = DataProviderType.Universal;
                 Enum.TryParse(trackerType, true, out type);
                 webConfig.DataProviderType = type;
 
-                Console.WriteLine("create new request config");
+                Console.WriteLine("Create new request config..");
                 var requestConfig = new RequestRateConfiguration();
                 config.WebsiteConfiguration.RequestRateConfiguration = requestConfig;
 
-                Console.WriteLine("set request settings");
+                Console.WriteLine("Set request settings..");
                 requestConfig.RequestRateInMinutes = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestRateInMinutes).ToLower()).Value);
                 requestConfig.RequestsTillSleep = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestsTillSleep).ToLower()).Value);
                 requestConfig.RequestTimeoutInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestTimeoutInMilliseconds).ToLower()).Value);
                 requestConfig.RequestDelayInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestDelayInMilliseconds).ToLower()).Value);
 
-                Console.WriteLine("set content selectors");
+                Console.WriteLine("Set content selectors..");
                 XmlNode selectorRoot = configNode.SelectSingleNode("contentSelectors");
                 XmlNodeList selectorNodes = selectorRoot.SelectNodes("selector");
 
@@ -108,18 +106,17 @@ namespace DevTracker.Configuration
                     item.JqSelector = selectorNode.Attributes["jqSelector"].InnerText;
                     item.DateTimeFormat = selectorNode.Attributes["dateTimeFormat"]?.InnerText;
 
-                    Console.WriteLine("test whether a regex pattern which filters the data is specified");
                     if (selectorNode.Attributes["regexPattern"] == null)
                     {
                         item.UseRegexFilter = false;
                     }
                     else
                     {
-                        Console.WriteLine("if a pattern exists, set 'UseRegexFilter' to true");
+                        Console.WriteLine("Save regex pattern..");
                         item.RegexPattern = selectorNode.Attributes["regexPattern"].InnerText;
                         item.UseRegexFilter = true;
 
-                        Console.WriteLine("set replace string, use $1 if it does not exist");
+                        Console.WriteLine("Set replace string, use $1 if it does not exist..");
                         if (selectorNode.Attributes["regexReplace"] != null)
                         {
                             item.RegexReplace = selectorNode.Attributes["regexReplace"].InnerText;
@@ -134,7 +131,7 @@ namespace DevTracker.Configuration
                     {
                         if (selectorNode.Attributes["attributeName"] == null)
                         {
-                            Console.WriteLine("You need to set an attribute name for the selector data type 'attribute'");
+                            throw new Exception("You need to set an attribute name for the selector data type 'attribute'..");
                         }
                         else
                         {
@@ -145,7 +142,7 @@ namespace DevTracker.Configuration
                     selectors.Add(item);
                 }
 
-                Console.WriteLine("set tracked profiles");
+                Console.WriteLine("Set tracked profiles..");
                 config.TrackedProfiles = new List<Profile>();
                 var trackedProfilesRoot = configNode.SelectSingleNode("trackedProfiles");
 

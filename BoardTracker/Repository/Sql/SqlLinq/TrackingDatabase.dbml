@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Dev" Class="TrackingDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=STEFAN\DEV;Initial Catalog=Dev;Integrated Security=True" SettingsObjectName="DevTracker.Properties.Settings" SettingsPropertyName="DevConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=STEFAN\DEV;Initial Catalog=Dev;Integrated Security=True" SettingsObjectName="BoardTracker.Properties.Settings" SettingsPropertyName="DevConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Author" Member="Authors">
     <Type Name="Author">
       <Column Name="AuthorId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

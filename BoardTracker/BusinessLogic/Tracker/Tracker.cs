@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
-using CsQuery;
-using CsQuery.ExtensionMethods.Internal;
-using DevTracker.BusinessLogic.DataProvider;
-using DevTracker.BusinessLogic.Selector;
-using DevTracker.Configuration;
-using DevTracker.Model;
-using DevTracker.Repository;
+using BoardTracker.BusinessLogic.DataProvider;
+using BoardTracker.Configuration.Model;
+using BoardTracker.Model;
+using BoardTracker.Repository;
 
-namespace DevTracker.BusinessLogic.Tracker
+namespace BoardTracker.BusinessLogic.Tracker
 {
     public class Tracker
     {

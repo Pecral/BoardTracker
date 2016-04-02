@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.BusinessLogic.DataProvider.Universal;
+using BoardTracker.BusinessLogic.DataProvider.Universal;
 
-namespace DevTracker.BusinessLogic.DataProvider
+namespace BoardTracker.BusinessLogic.DataProvider
 {
     public class DataProviderHandler
     {

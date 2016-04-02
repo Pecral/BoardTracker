@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.BusinessLogic;
-using DevTracker.BusinessLogic.DataProvider;
-using DevTracker.BusinessLogic.Selector;
+﻿using System.Collections.Generic;
+using BoardTracker.BusinessLogic;
+using BoardTracker.BusinessLogic.DataProvider;
+using BoardTracker.BusinessLogic.Selector;
 
-namespace DevTracker.Configuration.Model
+namespace BoardTracker.Configuration.Model
 {
     public class WebsiteConfiguration
     {

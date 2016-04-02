@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using BoardTracker.Model;
 using CsQuery.ExtensionMethods.Internal;
-using DevTracker.Model;
 
-namespace DevTracker.Configuration
+namespace BoardTracker.Configuration
 {
     public class AuthorsConfigurationSection : IConfigurationSectionHandler
     {

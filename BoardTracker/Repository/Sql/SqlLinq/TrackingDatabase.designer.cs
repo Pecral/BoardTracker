@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DevTracker.Repository.Sql.SqlLinq
+namespace BoardTracker.Repository.Sql.SqlLinq
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -45,7 +45,7 @@ namespace DevTracker.Repository.Sql.SqlLinq
     #endregion
 		
 		public TrackingDatabaseDataContext() : 
-				base(global::DevTracker.Properties.Settings.Default.DevConnectionString, mappingSource)
+				base(global::BoardTracker.Properties.Settings.Default.DevConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

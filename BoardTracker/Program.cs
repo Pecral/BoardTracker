@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using CsQuery.ExtensionMethods;
-using DevTracker.BusinessLogic;
-using DevTracker.BusinessLogic.DataProvider;
-using DevTracker.BusinessLogic.Selector;
-using DevTracker.BusinessLogic.Tracker;
-using DevTracker.Configuration;
-using DevTracker.Model;
-using DevTracker.Repository;
+using BoardTracker.BusinessLogic.DataProvider;
+using BoardTracker.BusinessLogic.Tracker;
+using BoardTracker.Configuration.Model;
+using BoardTracker.Repository;
 
-namespace DevTracker
+namespace BoardTracker
 {
     class Program
     {

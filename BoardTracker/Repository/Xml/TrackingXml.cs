@@ -1,14 +1,13 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Xml.Linq;
-using DevTracker.Model;
+using BoardTracker.Extensions;
+using BoardTracker.Model;
 
-namespace DevTracker.Repository.Xml
+namespace BoardTracker.Repository.Xml
 {
     /// <summary>
     /// DEPRECATED!!

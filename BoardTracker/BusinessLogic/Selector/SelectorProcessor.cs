@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Web;
 using CsQuery;
 
-namespace DevTracker.BusinessLogic.Selector
+namespace BoardTracker.BusinessLogic.Selector
 {
 
     public class SelectorProcessor

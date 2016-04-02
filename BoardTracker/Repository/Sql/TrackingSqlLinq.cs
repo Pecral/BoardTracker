@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.Extensions;
-using Model = DevTracker.Model;
-using DataContext = DevTracker.Repository.Sql.SqlLinq;
+using BoardTracker.Repository.Sql.SqlLinq;
+using DataContext = BoardTracker.Repository.Sql.SqlLinq;
 
 
 
-namespace DevTracker.Repository.Sql
+namespace BoardTracker.Repository.Sql
 {
     public class TrackingSqlLinq : ITrackingRepository
     {
@@ -34,7 +31,7 @@ namespace DevTracker.Repository.Sql
             {
                 DataContext.Post cPost = new DataContext.Post();
 
-                DataContext.Mapping.MapToPostEntity(post, cPost);
+                Mapping.MapToPostEntity(post, cPost);
                 cPosts.Add(cPost);
             }
 
@@ -46,7 +43,7 @@ namespace DevTracker.Repository.Sql
         {
             DataContext.Post cPost = new DataContext.Post();
 
-            DataContext.Mapping.MapToPostEntity(post, cPost);
+            Mapping.MapToPostEntity(post, cPost);
             dataContext.Posts.InsertOnSubmit(cPost);
             dataContext.SubmitChanges();
         }
@@ -54,7 +51,7 @@ namespace DevTracker.Repository.Sql
         public void AddWebsite(Model.Website website)
         {
             DataContext.Website entity = new DataContext.Website();
-            DataContext.Mapping.MapToWebsiteEntity(website, entity);
+            Mapping.MapToWebsiteEntity(website, entity);
 
             dataContext.Websites.InsertOnSubmit(entity);
             dataContext.SubmitChanges();
@@ -63,7 +60,7 @@ namespace DevTracker.Repository.Sql
         public void AddProfile(Model.Profile profile)
         {
             DataContext.Profile entity = new DataContext.Profile();
-            DataContext.Mapping.MapToProfileEntity(profile, entity);
+            Mapping.MapToProfileEntity(profile, entity);
 
             dataContext.Profiles.InsertOnSubmit(entity);
             dataContext.SubmitChanges();
@@ -72,7 +69,7 @@ namespace DevTracker.Repository.Sql
         public void AddAuthor(Model.Author author)
         {
             DataContext.Author cAuthor = new DataContext.Author();
-            DataContext.Mapping.MapToAuthorEntity(author, cAuthor);
+            Mapping.MapToAuthorEntity(author, cAuthor);
 
             dataContext.Authors.InsertOnSubmit(cAuthor);
             dataContext.SubmitChanges();
@@ -94,7 +91,7 @@ namespace DevTracker.Repository.Sql
             if (entity != null)
             {
                 Model.Author model = new Model.Author();
-                DataContext.Mapping.MapToAuthorModel(entity, model);
+                Mapping.MapToAuthorModel(entity, model);
 
                 return model;
             }
@@ -114,7 +111,7 @@ namespace DevTracker.Repository.Sql
             if (entity != null)
             {
                 Model.Profile model = new Model.Profile();
-                DataContext.Mapping.MapToProfileModel(entity, model);
+                Mapping.MapToProfileModel(entity, model);
 
                 return model;
             }
@@ -134,7 +131,7 @@ namespace DevTracker.Repository.Sql
             if (entity != null)
             {
                 Model.Website model = new Model.Website();
-                DataContext.Mapping.MapToWebsiteModel(entity, model);
+                Mapping.MapToWebsiteModel(entity, model);
 
                 return model;
             }
@@ -149,7 +146,7 @@ namespace DevTracker.Repository.Sql
             if (entity != null)
             {
                 Model.Post model = new Model.Post();
-                DataContext.Mapping.MapToPostModel(entity, model);
+                Mapping.MapToPostModel(entity, model);
 
                 return model;
             }
@@ -176,7 +173,7 @@ namespace DevTracker.Repository.Sql
             }
             else
             {
-                DataContext.Mapping.MapToPostEntity(post, entity);
+                Mapping.MapToPostEntity(post, entity);
                 dataContext.SubmitChanges();
             }
         }
@@ -195,7 +192,7 @@ namespace DevTracker.Repository.Sql
             }
             else
             {
-                DataContext.Mapping.MapToWebsiteEntity(website, entity);
+                Mapping.MapToWebsiteEntity(website, entity);
                 dataContext.SubmitChanges();
             }
         }
@@ -215,7 +212,7 @@ namespace DevTracker.Repository.Sql
             }
             else
             {
-                DataContext.Mapping.MapToProfileEntity(profile, entity);
+                Mapping.MapToProfileEntity(profile, entity);
                 dataContext.SubmitChanges();
             }
         }
@@ -234,7 +231,7 @@ namespace DevTracker.Repository.Sql
             }
             else
             {
-                DataContext.Mapping.MapToAuthorEntity(author, entity);
+                Mapping.MapToAuthorEntity(author, entity);
                 dataContext.SubmitChanges();
             }
         }

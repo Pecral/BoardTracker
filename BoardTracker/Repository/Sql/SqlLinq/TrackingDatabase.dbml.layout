@@ -27,7 +27,7 @@
         <classShapeMoniker Id="200fc1de-ca37-4041-992e-36243a118d25" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 2.06814697265625); (3.5 : 2.06814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 2.06814697265625); (3.5 : 2.06814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/TrackingDatabaseDataContext/Website/Website_Profile" />
       <nodes>
         <classShapeMoniker Id="f60bdead-6d4c-4e41-91f6-112e3d720bdf" />
@@ -40,7 +40,7 @@
         <elementListCompartment Id="b1042124-4673-4c95-ad30-436d952d9b10" absoluteBounds="6.89, 2.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.5 : 2.73159912109375); (6.875 : 2.73159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 2.73159912109375); (6.875 : 2.73159912109375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/TrackingDatabaseDataContext/Profile/Profile_Post" />
       <nodes>
         <classShapeMoniker Id="200fc1de-ca37-4041-992e-36243a118d25" />

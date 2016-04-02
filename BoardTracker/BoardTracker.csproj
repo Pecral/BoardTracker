@@ -7,8 +7,8 @@
     <ProjectGuid>{26E31902-8ED3-4968-856F-04139AF4D98E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DevTracker</RootNamespace>
-    <AssemblyName>DevTracker</AssemblyName>
+    <RootNamespace>BoardTracker</RootNamespace>
+    <AssemblyName>BoardTracker</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

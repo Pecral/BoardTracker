@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevTracker.BusinessLogic;
-using DevTracker.BusinessLogic.Selector;
-using DevTracker.Configuration.Model;
-using DevTracker.Model;
+﻿using System.Collections.Generic;
+using BoardTracker.Model;
 
-namespace DevTracker.Configuration
+namespace BoardTracker.Configuration.Model
 {
     public class TrackingConfiguration
     {
