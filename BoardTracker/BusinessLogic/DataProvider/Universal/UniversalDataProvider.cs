@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using BoardTracker.BusinessLogic.Selector;
 using BoardTracker.Configuration.Model;
@@ -17,6 +18,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         public UniversalDataProvider()
         {
             webClient = new WebClient();
+            webClient.Encoding = Encoding.UTF8;
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         /// <returns>Returns the models of the post which are displayed in the current page</returns>
         public IEnumerable<Post> ProvidePostsInPage(Profile profile, string pageHtml, List<Post> savedPostsInCurrentSession)
         {
-            CQ dom = pageHtml;
+            var dom = CQ.CreateDocument(pageHtml);
 
             var posts = dom[postListSelector.JqSelector].ToList();
             foreach (var post in posts)

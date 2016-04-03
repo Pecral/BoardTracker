@@ -67,6 +67,7 @@
     <Compile Include="Configuration\Model\WebsiteConfiguration.cs" />
     <Compile Include="Configuration\SiteTrackingConfigurationSection.cs" />
     <Compile Include="Configuration\Model\TrackingConfiguration.cs" />
+    <Compile Include="Extensions\EncodingExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Web;
 using CsQuery;
+using BoardTracker.Extensions;
 
 namespace BoardTracker.BusinessLogic.Selector
 {
@@ -24,6 +25,10 @@ namespace BoardTracker.BusinessLogic.Selector
 
                 case ContentSelectorDataType.Html:
                     data = targetElement.Html();
+                    break;
+
+                case ContentSelectorDataType.Text:
+                    data = targetElement.Text();
                     break;
 
                 default:

@@ -57,16 +57,16 @@ A profile looks like this:
   <add key="website" value="WoW" />
   <!-- Its URL -->
   <add key="websiteUrl" value="http://eu.battle.net/wow/en"/>
-  
+
   <!-- Define the data provider type which is used to download the data from the website, parse its html code and create the post-models, here.
   You can implement your own tracker for specific websites (i.e. Twitter with their API) and change the tracker type for every tracking profile seperately.
   The definition is optional, the standard provider is "Universal" -->
   <add key="dataProviderType" value="universal" />
-  
+
   <!--A boolean to specify whether the content of a post should be stored
   The definition is optional, the standard value is "true"-->
   <add key="savePostContent" value="false"/>
-  
+
   <!-- If a profile is tracked for the first time, the tracker will save the whole post-history.
   In the next tracking-rotation, only new posts will be tracked - the program doesn't search for updated old posts if you don't use this option!
   If the value is set to 30, all posts of the last thirty days will be checked for updates. -->
@@ -90,10 +90,10 @@ A profile looks like this:
   <contentSelectors>
 	<selector target="PostElementPostingDateTime" jqSelector=".meta" dataType="Html" regexPattern=".*(\d{2}/\d{2}/\d{2} \d{2}:\d{2})\s*$" regexReplace="$1" dateTimeFormat="dd/MM/yy HH:mm" />
 	<selector target="PostElementContent" jqSelector=".content" dataType="Html" />
-	<selector target="PostElementForum" jqSelector=".meta .sublink" dataType="Html" />
-	<selector target="PostElementForumLink" jqSelector=".meta .sublink" dataType="Attribute" attributeName="href" regexPattern=".*" regexReplace="http://eu.battle.net$0" />
-	<selector target="PostElementPostLink" jqSelector=".subheader-3 a" dataType="Attribute" attributeName="href" regexPattern=".*" regexReplace="http://eu.battle.net$0"  />
-	<selector target="PostElementThreadTitle" jqSelector=".subheader-3 a" dataType="Html" />
+	<selector target="PostElementForum" jqSelector=".meta .sublink" dataType="Text" />
+	<selector target="PostElementForumLink" jqSelector=".meta .sublink" dataType="Attribute" attributeName="href" regexPattern="^.*$" regexReplace="http://eu.battle.net$0" />
+	<selector target="PostElementPostLink" jqSelector=".subheader-3 a" dataType="Attribute" attributeName="href" regexPattern="^.*$" regexReplace="http://eu.battle.net$0"  />
+	<selector target="PostElementThreadTitle" jqSelector=".subheader-3 a" dataType="Text" />
 
 	<!--The pagination element should select either the link of the next page or the last page number (depending on the pagination type)-->
 	<selector target="PaginationElement" jqSelector=".ui-pagination li:nth-last-child(2) a" dataType="Attribute" attributeName="data-pagenum" />

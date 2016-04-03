@@ -8,6 +8,6 @@
     {
         Html,
         Attribute,
-        DomElement
+        Text
     }
 }

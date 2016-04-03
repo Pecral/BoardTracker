@@ -34,7 +34,7 @@
         /// <summary>
         /// A boolean which decides whether special html characters should be decoded ('&amp;' back to '&')
         /// </summary>
-        public bool DecodeHtml => DataType != ContentSelectorDataType.DomElement;
+        public bool DecodeHtml { get; set; } = true;
 
         /// <summary>
         /// The date time format for the moment of a post
