@@ -83,7 +83,8 @@ A profile looks like this:
   <!-- After the tracker completed the whole profile, it will sleep for a specific number of minutes-->
   <add key="requestRateInMinutes" value="10"/>
   <add key="requestsTillSleep" value="20"/>
-  <add key="requestTimeoutInMilliseconds" value="1000"/>
+  <add key="requestSleepInMilliseconds" value="1000"/>
+  <!-- Sleep a little bit after every request -->
   <add key="requestDelayInMilliseconds" value="100" />
 
   <!-- Specify the jQuery selectors for the different parts of a post here-->

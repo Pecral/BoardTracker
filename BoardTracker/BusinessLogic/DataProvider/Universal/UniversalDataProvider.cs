@@ -74,7 +74,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         #region Current Session Properties
 
         //we'll track the amount of requests since the last timeout
-        private int requestsSinceLastTimeout;
+        private int requestsSinceLastSleep;
 
         /// <summary>
         /// The template url where the {profile}-template is replaced with the currently tracked profile
@@ -163,7 +163,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                     yield break;
                 }
 
-                requestsSinceLastTimeout++;
+                requestsSinceLastSleep++;
 
                 //abort the import process for this author if we reached posts which are too old
                 IEnumerable<Post> postsInPage = ProvidePostsInPage(profile, currentWebsiteHtml, savedPostsInCurrentSession);
@@ -281,18 +281,22 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         }
 
         /// <summary>
-        /// Check whether we have to take a break so that we don't ddos the server
-        /// Take the nap if true
+        /// Check whether we have to take a nap
         /// </summary>
         private void CheckTimeout()
         {
-            if (requestsSinceLastTimeout >= requestConfig.RequestsTillSleep)
+            if (requestsSinceLastSleep >= requestConfig.RequestsTillSleep)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - Amount of requests till the last timeout is too much, we'll take a nap for now");
-                Thread.Sleep(TimeSpan.FromMilliseconds(requestConfig.RequestTimeoutInMilliseconds));
+                Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - Amount of requests till the last sleep is too much, we'll take a nap for now");
+                Thread.Sleep(TimeSpan.FromMilliseconds(requestConfig.RequestSleepInMilliseconds));
                 Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - We're back!");
 
-                requestsSinceLastTimeout = 0;
+                requestsSinceLastSleep = 0;
+            }
+            else if(requestConfig.RequestDelayInMilliseconds > 0)
+            {
+                //request delay..
+                Thread.Sleep(TimeSpan.FromMilliseconds(requestConfig.RequestDelayInMilliseconds));
             }
         }
 

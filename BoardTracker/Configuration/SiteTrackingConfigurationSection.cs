@@ -88,7 +88,7 @@ namespace BoardTracker.Configuration
                 Console.WriteLine("Set request settings..");
                 requestConfig.RequestRateInMinutes = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestRateInMinutes).ToLower()).Value);
                 requestConfig.RequestsTillSleep = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestsTillSleep).ToLower()).Value);
-                requestConfig.RequestTimeoutInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestTimeoutInMilliseconds).ToLower()).Value);
+                requestConfig.RequestSleepInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestSleepInMilliseconds).ToLower()).Value);
                 requestConfig.RequestDelayInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestDelayInMilliseconds).ToLower()).Value);
 
                 Console.WriteLine("Set content selectors..");

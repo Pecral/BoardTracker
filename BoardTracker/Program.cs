@@ -40,7 +40,7 @@ namespace BoardTracker
 
                     Console.WriteLine("");
                     Console.WriteLine($"Request rate in minutes: {config.WebsiteConfiguration.RequestRateConfiguration.RequestRateInMinutes}");
-                    Console.WriteLine($"Request timeout in milliseconds: {config.WebsiteConfiguration.RequestRateConfiguration.RequestTimeoutInMilliseconds}");
+                    Console.WriteLine($"Request timeout in milliseconds: {config.WebsiteConfiguration.RequestRateConfiguration.RequestSleepInMilliseconds}");
                     Console.WriteLine($"Requests till sleep: {config.WebsiteConfiguration.RequestRateConfiguration.RequestsTillSleep}");
 
                     Console.WriteLine($"Pagination type: {config.WebsiteConfiguration.PaginationType}");

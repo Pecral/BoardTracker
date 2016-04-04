@@ -15,7 +15,7 @@
         /// <summary>
         /// The amount of milliseconds we will sleep at each timeout
         /// </summary>
-        public int RequestTimeoutInMilliseconds;
+        public int RequestSleepInMilliseconds;
 
         /// <summary>
         /// The amount of milliseconds we will sleep after each request
