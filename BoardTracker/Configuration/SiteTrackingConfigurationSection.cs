@@ -9,12 +9,14 @@ using BoardTracker.BusinessLogic.Selector;
 using BoardTracker.Configuration.Model;
 using BoardTracker.Model;
 using CsQuery.ExtensionMethods.Internal;
+using NLog;
 
 namespace BoardTracker.Configuration
 {
 
     public class SiteTrackingConfigurationSection : IConfigurationSectionHandler
     {
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Parse the xml format of the tracking configurations to actual objects
         /// We could use deserialization I guess, I have to test this though
@@ -29,16 +31,16 @@ namespace BoardTracker.Configuration
 
             List<TrackingConfiguration> configs = new List<TrackingConfiguration>();
 
-            Console.WriteLine("Select tracking configuration nodes..");
+            logger.Info("Select tracking configuration nodes..");
             XmlNodeList trackingProfileConfigurations = section.SelectNodes("trackingConfiguration");
             
-            Console.WriteLine("Iterate through configs..");
+            logger.Info("Iterate through configs..");
             foreach (XmlNode configNode in trackingProfileConfigurations)
             {
                 TrackingConfiguration config = new TrackingConfiguration();
                 configs.Add(config);
 
-                Console.WriteLine("Read name-value properties..");
+                logger.Info("Read name-value properties..");
                 Dictionary<string, string> attr = new Dictionary<string, string>();
                 attr.AddRange(configNode.SelectNodes("add")
                     .Cast<XmlNode>()
@@ -48,14 +50,14 @@ namespace BoardTracker.Configuration
                                 x.Attributes["value"].InnerText))
                     .ToArray());
 
-                Console.WriteLine("Create new website config..");
+                logger.Info("Create new website config..");
                 var webConfig = new WebsiteConfiguration();
                 config.WebsiteConfiguration = webConfig;
 
-                Console.WriteLine("Set the website that we want to track..");
+                logger.Info("Set the website that we want to track..");
                 config.WebsiteConfiguration.Website = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.Website), StringComparison.CurrentCultureIgnoreCase)).Value;
 
-                Console.WriteLine("Set website's url and history template..");
+                logger.Info("Set website's url and history template..");
                 webConfig.WebsiteUrl = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.WebsiteUrl), StringComparison.CurrentCultureIgnoreCase)).Value;
                 webConfig.PostHistoryTemplate = attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.PostHistoryTemplate), StringComparison.CurrentCultureIgnoreCase)).Value;
 
@@ -71,27 +73,27 @@ namespace BoardTracker.Configuration
                     webConfig.CheckLastXDaysForUpdates = Int32.Parse(attr.FirstOrDefault(x => x.Key.Equals(nameof(webConfig.CheckLastXDaysForUpdates), StringComparison.CurrentCultureIgnoreCase)).Value);
                 }
 
-                Console.WriteLine("Set pagination type..");
+                logger.Info("Set pagination type..");
                 string paginationTypeConfig = attr.FirstOrDefault(x => x.Key == nameof(webConfig.PaginationType).ToLower()).Value;
                 webConfig.PaginationType = (PaginationType)Enum.Parse(typeof(PaginationType), paginationTypeConfig, true);
 
-                Console.WriteLine("Set tracker type..");
+                logger.Info("Set tracker type..");
                 string trackerType = attr.FirstOrDefault(x => x.Key == nameof(webConfig.DataProviderType).ToLower()).Value ?? "";
                 DataProviderType type = DataProviderType.Universal;
                 Enum.TryParse(trackerType, true, out type);
                 webConfig.DataProviderType = type;
 
-                Console.WriteLine("Create new request config..");
+                logger.Info("Create new request config..");
                 var requestConfig = new RequestRateConfiguration();
                 config.WebsiteConfiguration.RequestRateConfiguration = requestConfig;
 
-                Console.WriteLine("Set request settings..");
+                logger.Info("Set request settings..");
                 requestConfig.RequestRateInMinutes = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestRateInMinutes).ToLower()).Value);
                 requestConfig.RequestsTillSleep = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestsTillSleep).ToLower()).Value);
                 requestConfig.RequestSleepInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestSleepInMilliseconds).ToLower()).Value);
                 requestConfig.RequestDelayInMilliseconds = Int32.Parse(attr.FirstOrDefault(x => x.Key == nameof(requestConfig.RequestDelayInMilliseconds).ToLower()).Value);
 
-                Console.WriteLine("Set content selectors..");
+                logger.Info("Set content selectors..");
                 XmlNode selectorRoot = configNode.SelectSingleNode("contentSelectors");
                 XmlNodeList selectorNodes = selectorRoot.SelectNodes("selector");
 
@@ -112,11 +114,11 @@ namespace BoardTracker.Configuration
                     }
                     else
                     {
-                        Console.WriteLine("Save regex pattern..");
+                        logger.Info("Save regex pattern..");
                         item.RegexPattern = selectorNode.Attributes["regexPattern"].InnerText;
                         item.UseRegexFilter = true;
 
-                        Console.WriteLine("Set replace string, use $1 if it does not exist..");
+                        logger.Info("Set replace string, use $1 if it does not exist..");
                         if (selectorNode.Attributes["regexReplace"] != null)
                         {
                             item.RegexReplace = selectorNode.Attributes["regexReplace"].InnerText;
@@ -142,7 +144,7 @@ namespace BoardTracker.Configuration
                     selectors.Add(item);
                 }
 
-                Console.WriteLine("Set tracked profiles..");
+                logger.Info("Set tracked profiles..");
                 config.TrackedProfiles = new List<Profile>();
                 var trackedProfilesRoot = configNode.SelectSingleNode("trackedProfiles");
 

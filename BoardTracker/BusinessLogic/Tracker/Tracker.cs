@@ -6,11 +6,14 @@ using BoardTracker.BusinessLogic.DataProvider;
 using BoardTracker.Configuration.Model;
 using BoardTracker.Model;
 using BoardTracker.Repository;
+using NLog;
 
 namespace BoardTracker.BusinessLogic.Tracker
 {
     public class Tracker
     {
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Creates a universal tracker to track forum posts.
@@ -77,7 +80,7 @@ namespace BoardTracker.BusinessLogic.Tracker
         {
             while (true)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Start tracking..");
+                logger.Info($"{website.Name} - Start tracking..");
 
                 //iterate through the profiles and start the tracking process
                 foreach (var profile in trackedProfiles)
@@ -85,7 +88,7 @@ namespace BoardTracker.BusinessLogic.Tracker
                     StartTrackingOfProfile(profile);
                 }
 
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Sleep for {requestConfig.RequestRateInMinutes} minutes..");
+                logger.Info($"{website.Name} - Sleep for {requestConfig.RequestRateInMinutes} minutes..");
                 Thread.Sleep(TimeSpan.FromMinutes(requestConfig.RequestRateInMinutes));
             }
         }
@@ -103,11 +106,11 @@ namespace BoardTracker.BusinessLogic.Tracker
             DateTime? lastPostTime = repository.GetDateOfLastPost(profile);
             if (lastPostTime.HasValue)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - DateTime of " + profile.Name + "'s last post: " + lastPostTime.Value.ToString("dd.MM.yyyy hh:mm:ss"));
+                logger.Info($"{website.Name} - DateTime of " + profile.Name + "'s last post: " + lastPostTime.Value.ToString("dd.MM.yyyy hh:mm:ss"));
             }
             else
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - {profile.Name} does not have a post tracked yet.");
+                logger.Info($"{website.Name} - {profile.Name} does not have a post tracked yet.");
             }
 
             //calculate the timespan in which posts will be checked for updates
@@ -116,7 +119,7 @@ namespace BoardTracker.BusinessLogic.Tracker
             //log which posts will be checked for updates if it's not an empty profile
             if (lastPostTime != null)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - All posts which are newer than {postCheckDateTime} will be updated");
+                logger.Info($"{website.Name} - All posts which are newer than {postCheckDateTime} will be updated");
             }
             
             //iterate through posts and add new posts
@@ -136,8 +139,8 @@ namespace BoardTracker.BusinessLogic.Tracker
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(
-                                $"{Program.DatePattern()} - {website.Name} - Post insertion failed - Exception Message = " +
+                            logger.Error(
+                                $"{website.Name} - Post insertion failed - Exception Message = " +
                                 e.Message + "; Inner Message = " +
                                 e.InnerException?.Message);
 
@@ -148,8 +151,8 @@ namespace BoardTracker.BusinessLogic.Tracker
                             var maxPostLink = postsBatch.OrderBy(x => x.PostLink.Length).LastOrDefault().PostLink.Length;
                             var maxThreadTitle = postsBatch.OrderBy(x => x.ThreadTitle.Length).LastOrDefault().ThreadTitle.Length;
 
-                            Console.WriteLine(
-                                $"{Program.DatePattern()} - {website.Name} - Max Lengths: ForumLink {maxForumLink} - ForumName {maxForumName} - Content {maxContent} - PostLink {maxPostLink} - ThreadTitle {maxThreadTitle}");
+                            logger.Error(
+                                $"{website.Name} - Max Lengths: ForumLink {maxForumLink} - ForumName {maxForumName} - Content {maxContent} - PostLink {maxPostLink} - ThreadTitle {maxThreadTitle}");
                         }
                         finally
                         {
@@ -176,7 +179,7 @@ namespace BoardTracker.BusinessLogic.Tracker
             }
             catch (Exception e)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Post insertion failed - Exception Message = " +
+                logger.Log(LogLevel.Trace, $"{website.Name} - Post insertion failed - Exception Message = " +
                                 e.Message + "; Inner Message = " +
                                 e.InnerException?.Message);
             }
@@ -193,11 +196,11 @@ namespace BoardTracker.BusinessLogic.Tracker
             DateTime? lastPostTime = repository.GetDateOfLastPost(profile);
             if (lastPostTime.HasValue)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - DateTime of " + profile.Name + "'s last post: " + lastPostTime.Value.ToString("dd.MM.yyyy hh:mm:ss"));
+                logger.Info($"{website.Name} - DateTime of " + profile.Name + "'s last post: " + lastPostTime.Value.ToString("dd.MM.yyyy hh:mm:ss"));
             }
             else
             {
-                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - {profile.Name} does not have a post tracked yet.");
+                logger.Info($"{website.Name} - {profile.Name} does not have a post tracked yet.");
             }
 
             return lastPostTime;

@@ -10,11 +10,14 @@ using BoardTracker.BusinessLogic.Selector;
 using BoardTracker.Configuration.Model;
 using BoardTracker.Model;
 using CsQuery;
+using NLog;
 
 namespace BoardTracker.BusinessLogic.DataProvider.Universal
 {
     public class UniversalDataProvider : IDataProvider
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public UniversalDataProvider()
         {
             webClient = new WebClient();
@@ -134,7 +137,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         /// <returns></returns>
         public IEnumerable<Post> ProvidePostsInProfile(Profile profile)
         {
-            Console.WriteLine($"{Program.DatePattern()} - Start tracking profile {profile.Name} ..");
+            logger.Info($"Start tracking profile {profile.Name} ..");
             List<Post> savedPostsInCurrentSession = new List<Post>();
             List<string> visitedLinksInCurrentSession = new List<string>();
 
@@ -160,7 +163,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 //break data-provider if we didn't receive any url
                 if (currentWebsiteHtml == null)
                 {
-                    Debug.Write($"{Program.DatePattern()} - Cancelled data-provider for website {currentWebsite} because we were unable to download the html data from the URL ({currentWebsiteUrl})");
+                    logger.Error($"Cancelled data-provider for website {currentWebsite} because we were unable to download the html data from the URL ({currentWebsiteUrl})");
                     yield break;
                 }
                 requestsSinceLastSleep++;
@@ -177,7 +180,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
             } while ((currentWebsiteUrl = RequestNextPageUrl(currentWebsiteHtml)) != null &&
                      visitedLinksInCurrentSession.All(x => x != currentWebsiteUrl));
 
-            Console.WriteLine($"{Program.DatePattern()} - Finished data providing for profile {profile.Name}");
+            logger.Info($"Finished data providing for profile {profile.Name}");
         }
 
         /// <summary>
@@ -206,7 +209,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - The parsing of the post's date failed. The data '{dateTimeData}' does not match the format '{postElement_postingDateTime.DateTimeFormat}'");
+                    logger.Error($"{currentWebsite} - The parsing of the post's date failed. The data '{dateTimeData}' does not match the format '{postElement_postingDateTime.DateTimeFormat}'");
                     throw e;
                 }
 
@@ -286,9 +289,9 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         {
             if (requestsSinceLastSleep >= requestConfig.RequestsTillSleep)
             {
-                Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - Amount of requests till the last sleep is too much, we'll take a nap for now");
+                logger.Info($"{currentWebsite} - Amount of requests till the last sleep is too much, we'll take a nap for now");
                 Thread.Sleep(TimeSpan.FromMilliseconds(requestConfig.RequestSleepInMilliseconds));
-                Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - We're back!");
+                logger.Info($"{currentWebsite} - We're back!");
 
                 requestsSinceLastSleep = 0;
             }
@@ -319,7 +322,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"{Program.DatePattern()} - {currentWebsite} - Failed to download html after {watch.Elapsed.TotalSeconds} seconds - {tries}. try");
+                    logger.Warn($"{currentWebsite} - Failed to download html after {watch.Elapsed.TotalSeconds} seconds - {tries}. try");
                     tries++;
                 }
                 watch.Stop();

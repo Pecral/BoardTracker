@@ -145,8 +145,6 @@ namespace BoardTracker.Repository.MySql
                                         $"Name={eName}, " +
                                         $"Url={eUrl};");
 
-            Debug.WriteLine(command.ToString());
-
             using (var connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
@@ -281,8 +279,6 @@ namespace BoardTracker.Repository.MySql
                                  $"WHERE AuthorId = {authorId} " +
                                  $"LIMIT 1";
 
-                Debug.WriteLine(command);
-
                 connection.Open();
                 using (MySqlCommand cmd = new MySqlCommand(command.ToString(), connection))
                 {
@@ -322,8 +318,6 @@ namespace BoardTracker.Repository.MySql
                                  $"FROM Website " +
                                  $"WHERE Name = '{MySqlHelper.EscapeString(name)}' " +
                                  $"LIMIT 1";
-
-                Debug.WriteLine(command);
 
                 connection.Open();
                 using (MySqlCommand cmd = new MySqlCommand(command.ToString(), connection))
