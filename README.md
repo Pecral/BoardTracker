@@ -12,7 +12,7 @@ An example site would be [BlueTracker](http://www.wowhead.com/bluetracker) for W
 
 * Database Types
   * Microsoft SQL Server (with LinqToSql)
-  * XML File (not finished)
+  * MySQL
 * Parallelized tracking of multiple websites
 * Select specific parts of a post with jQuery-selectors
 * Request-configuration
@@ -20,15 +20,16 @@ An example site would be [BlueTracker](http://www.wowhead.com/bluetracker) for W
   * Sleep timespan in milliseconds
   * Delay in milliseconds between each request
 * Disable/enable the storage of the post's content, if you don't need it
+* Advanced logging through NLog
 
 ###Usage
 ---
 
 1. Replace the connection string in your App.config file.
-2. If you're using the MSSQL repository (well that's the only option at the moment), open the directory "DatabaseScripts" and use "DatabaseCreation.sql" to create your database.
-   You can change the number of chars in the varchar-columns, but the LinqToSql models have to be updated then.
+2. Create your dabatase with the sql scripts in the "DatabaseCreation"-folder (MySQL and MSSQL). Note for MSSQL: If you want to extend the VARCHAR-size of some columns, you have to update the LinqToSql models, too.
 3. Update the tracking profiles to the websites that you want to track. Ensure that the jquery-selectors match to the website's html design!
-4. Start the program..
+4. Change the NLog-configuration file if you need additional logging targets/rules.
+5. Start the program..
 
 Any website where the post-history is openly accessible (without a login) and where a pagination-system exists can be tracked with the univeral data-provider.
 Something like Twitter's virtual scrolling system is not supported. Feel free to implement your own data-provider to use specific website APIs though. :)
@@ -41,8 +42,7 @@ I have tested the tracking of profiles on the following sites:
 ###Development Stage
 ---
 
-There's only a repository for Microsoft SQL server at the moment. Have a look at the DatabaseCreation.sql file under the directory DatabaseScripts to create your database.
-You can implement your own repository with the implementation of the interface "ITrackingRepository".
+There's only a repository for Microsoft SQL server and MySQL at the moment, you can create your own repository with the implementation of the interface "ITrackingRepository" though.
 
 ###Configuration
 ---
