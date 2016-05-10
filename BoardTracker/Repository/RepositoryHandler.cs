@@ -1,5 +1,6 @@
 ﻿using System;
-using BoardTracker.Repository.Sql;
+using BoardTracker.Repository.MsSql;
+using BoardTracker.Repository.MySql;
 
 namespace BoardTracker.Repository
 {
@@ -20,6 +21,9 @@ namespace BoardTracker.Repository
 
                 case RepositoryType.MSSQL:
                     return new TrackingSqlLinq(connectionString);
+
+                case RepositoryType.MYSQL:
+                    return new TrackingMySQL(connectionString);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

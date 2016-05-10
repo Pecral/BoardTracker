@@ -1,4 +1,4 @@
-﻿namespace BoardTracker.Repository.Sql.SqlLinq
+﻿namespace BoardTracker.Repository.MsSql.SqlLinq
 {
     public class Mapping
     {

@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoardTracker.Repository.Sql.SqlLinq
+namespace BoardTracker.Repository.MsSql.SqlLinq
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

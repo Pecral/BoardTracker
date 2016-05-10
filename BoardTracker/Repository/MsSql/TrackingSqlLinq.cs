@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using BoardTracker.Repository.MsSql.SqlLinq;
+using DataContext = BoardTracker.Repository.MsSql.SqlLinq;
 using System.Linq;
-using BoardTracker.Repository.Sql.SqlLinq;
-using DataContext = BoardTracker.Repository.Sql.SqlLinq;
 
-
-
-namespace BoardTracker.Repository.Sql
+namespace BoardTracker.Repository.MsSql
 {
     public class TrackingSqlLinq : ITrackingRepository
     {

@@ -86,7 +86,7 @@ namespace BoardTracker.BusinessLogic.Tracker
                 }
 
                 Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Sleep for {requestConfig.RequestRateInMinutes} minutes..");
-                Thread.Sleep(new TimeSpan(0, requestConfig.RequestRateInMinutes, 0));
+                Thread.Sleep(TimeSpan.FromMinutes(requestConfig.RequestRateInMinutes));
             }
         }
         
@@ -97,33 +97,49 @@ namespace BoardTracker.BusinessLogic.Tracker
         /// <param name="profileTemplateKey">The key which is used to fill the URL</param>
         private void StartTrackingOfProfile(Profile profile)
         {
-            //get the datetime of the last post
-            DateTime? lastPostTime = GetDateTimeOfLastPost(website, profile) ?? DateTime.MinValue;
             List<Post> postsBatch = new List<Post>();
 
-            DateTime postCheckDateTime = DateTime.Now.AddDays(checkPostsOfLastXDaysForUpdates * (-1));
-            Console.WriteLine($"{Program.DatePattern()} - {website.Name} - All posts which are newer than {postCheckDateTime} will be updated");
+            //get the datetime of the last post
+            DateTime? lastPostTime = repository.GetDateOfLastPost(profile);
+            if (lastPostTime.HasValue)
+            {
+                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - DateTime of " + profile.Name + "'s last post: " + lastPostTime.Value.ToString("dd.MM.yyyy hh:mm:ss"));
+            }
+            else
+            {
+                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - {profile.Name} does not have a post tracked yet.");
+            }
 
+            //calculate the timespan in which posts will be checked for updates
+            DateTime postCheckDateTime = DateTime.Now.Subtract(TimeSpan.FromDays(checkPostsOfLastXDaysForUpdates));
+
+            //log which posts will be checked for updates if it's not an empty profile
+            if (lastPostTime != null)
+            {
+                Console.WriteLine($"{Program.DatePattern()} - {website.Name} - All posts which are newer than {postCheckDateTime} will be updated");
+            }
+            
             //iterate through posts and add new posts
             foreach (Post post in dataProvider.ProvidePostsInProfile(profile))
             {
-                //add models if the posts are newer than the stored posts
+                //add models if the posts are newer than the stored posts or if the post is in the timespan where we want to check for updates
                 if (!lastPostTime.HasValue || post.PostingDateTime.CompareTo(lastPostTime) > 0)
                 {
                     postsBatch.Add(post);
 
+                    //if there are anough posts in a batch, we will insert it
                     if (postsBatch.Count >= 50)
                     {
                         try
                         {
                             repository.AddPosts(postsBatch);
-                            postsBatch.Clear();
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Post insertion failed - Exception Message = " +
-                                            e.Message + "; Inner Message = " +
-                                            e.InnerException?.Message);
+                            Console.WriteLine(
+                                $"{Program.DatePattern()} - {website.Name} - Post insertion failed - Exception Message = " +
+                                e.Message + "; Inner Message = " +
+                                e.InnerException?.Message);
 
                             //print lengths for eventual truncation of strings
                             var maxForumLink = postsBatch.OrderBy(x => x.ForumLink.Length).LastOrDefault().ForumLink.Length;
@@ -132,11 +148,16 @@ namespace BoardTracker.BusinessLogic.Tracker
                             var maxPostLink = postsBatch.OrderBy(x => x.PostLink.Length).LastOrDefault().PostLink.Length;
                             var maxThreadTitle = postsBatch.OrderBy(x => x.ThreadTitle.Length).LastOrDefault().ThreadTitle.Length;
 
-                            Console.WriteLine($"{Program.DatePattern()} - {website.Name} - Max Lengths: ForumLink {maxForumLink} - ForumName {maxForumName} - Content {maxContent} - PostLink {maxPostLink} - ThreadTitle {maxThreadTitle}");
+                            Console.WriteLine(
+                                $"{Program.DatePattern()} - {website.Name} - Max Lengths: ForumLink {maxForumLink} - ForumName {maxForumName} - Content {maxContent} - PostLink {maxPostLink} - ThreadTitle {maxThreadTitle}");
+                        }
+                        finally
+                        {
+                            postsBatch.Clear();
                         }
                     }
                 }
-                //upsert posts if they are newer than the specified check-date
+                //upsert post if they are in the specified timespan where we want to check for updates
                 else if (post.PostingDateTime.CompareTo(postCheckDateTime) >= 0)
                 {
                     repository.UpsertPost(post);

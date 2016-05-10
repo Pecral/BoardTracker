@@ -152,6 +152,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
             {
                 //check whether we have to sleep a little bit so that we don't ddos the server
                 CheckTimeout();
+                //we'll save the visited links here because we don't want to visit a page multiple times
                 visitedLinksInCurrentSession.Add(currentWebsiteUrl);
 
                 currentWebsiteHtml = DownloadHtml(currentWebsiteUrl);
@@ -159,10 +160,9 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 //break data-provider if we didn't receive any url
                 if (currentWebsiteHtml == null)
                 {
-                    Debug.Write($"{Program.DatePattern()} - Cancelled data-provider for website {currentWebsite}");
+                    Debug.Write($"{Program.DatePattern()} - Cancelled data-provider for website {currentWebsite} because we were unable to download the html data from the URL ({currentWebsiteUrl})");
                     yield break;
                 }
-
                 requestsSinceLastSleep++;
 
                 //abort the import process for this author if we reached posts which are too old
@@ -197,8 +197,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 //get dom of inner html - if we use the post object itself, it'll always be the first one of the list (??)
                 var postDom = post.InnerHTML;
                 var dateTimeData = SelectorProcessor.ProcessContentSelector(postElement_postingDateTime, postDom);
-
-                DateTime postingDateTime = DateTime.MinValue;
+                DateTime postingDateTime;
 
                 //try to parse the date
                 try
@@ -229,7 +228,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                     ThreadTitle = threadTitle
                 };
 
-                //only save new posts
+                //we don't want to return posts multiple times
                 if (savedPostsInCurrentSession.All(x => x.PostLink != model.PostLink))
                 {
                     savedPostsInCurrentSession.Add(model);

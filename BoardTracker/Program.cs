@@ -18,9 +18,11 @@ namespace BoardTracker
                 Console.WriteLine("Initialize config..");
                 List<TrackingConfiguration> trackingConfigurations = ConfigurationManager.GetSection("trackingConfigurations") as List<TrackingConfiguration>;        
 
+                //parse connection type enum
                 RepositoryType connectionType = (RepositoryType)Enum.Parse(typeof(RepositoryType), ConfigurationManager.ConnectionStrings[1].Name, true);
+                //get connection string
                 var connectionString = ConfigurationManager.ConnectionStrings[1].ConnectionString;
-                Console.WriteLine("Database Type: " + connectionType + ";Connection String: " + connectionString);
+                Console.WriteLine("Database Type: " + connectionType + "; Connection String: " + connectionString);
 
                 Console.WriteLine("################ Tracked sites ############\n");
 
