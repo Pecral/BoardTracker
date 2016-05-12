@@ -137,7 +137,6 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
         /// <returns></returns>
         public IEnumerable<Post> ProvidePostsInProfile(Profile profile)
         {
-            logger.Info($"Start tracking profile {profile.Name} ..");
             List<Post> savedPostsInCurrentSession = new List<Post>();
             List<string> visitedLinksInCurrentSession = new List<string>();
 
@@ -163,7 +162,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 //break data-provider if we didn't receive any url
                 if (currentWebsiteHtml == null)
                 {
-                    logger.Error($"Cancelled data-provider for website {currentWebsite} because we were unable to download the html data from the URL ({currentWebsiteUrl})");
+                    logger.Error($"{currentWebsite} - {profile.Name} - Cancelled data-provider because we were unable to download the html data from the URL ({currentWebsiteUrl})");
                     yield break;
                 }
                 requestsSinceLastSleep++;
@@ -179,8 +178,6 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
 
             } while ((currentWebsiteUrl = RequestNextPageUrl(currentWebsiteHtml)) != null &&
                      visitedLinksInCurrentSession.All(x => x != currentWebsiteUrl));
-
-            logger.Info($"Finished data providing for profile {profile.Name}");
         }
 
         /// <summary>
@@ -209,7 +206,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 }
                 catch (Exception e)
                 {
-                    logger.Error($"{currentWebsite} - The parsing of the post's date failed. The data '{dateTimeData}' does not match the format '{postElement_postingDateTime.DateTimeFormat}'");
+                    logger.Error($"{currentWebsite} - {profile.Name} - The parsing of the post's date failed. The data '{dateTimeData}' does not match the format '{postElement_postingDateTime.DateTimeFormat}'");
                     throw e;
                 }
 
@@ -322,7 +319,7 @@ namespace BoardTracker.BusinessLogic.DataProvider.Universal
                 }
                 catch (Exception)
                 {
-                    logger.Warn($"{currentWebsite} - Failed to download html after {watch.Elapsed.TotalSeconds} seconds - {tries}. try");
+                    logger.Warn($"{currentWebsite} - Failed to download html from url {url} after {watch.Elapsed.TotalSeconds} seconds - {tries}. try");
                     tries++;
                 }
                 watch.Stop();
