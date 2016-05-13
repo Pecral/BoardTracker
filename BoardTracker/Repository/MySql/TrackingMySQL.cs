@@ -35,12 +35,15 @@ namespace BoardTracker.Repository.MySql
             List<Post> smallBulk = new List<Post>();
 
             int number = 0;
+            int maxNumber = posts.Count();
 
             foreach (Post post in posts)
             {
                 number++;
                 smallBulk.Add(post);
-                if (number % 5 == 0)
+
+                //add 5 posts in a batch or add the rest
+                if (smallBulk.Count == 5 || number == maxNumber)
                 {
                     AddPostsInSmallBulk(smallBulk);
                     smallBulk.Clear();
@@ -48,6 +51,10 @@ namespace BoardTracker.Repository.MySql
             }
         }
 
+        /// <summary>
+        /// Att a specific amount of posts jn a batch. Note: An exception will be thrown if too much data is sent as a whole
+        /// </summary>
+        /// <param name="posts"></param>
         private void AddPostsInSmallBulk(IEnumerable<Post> posts)
         {
             StringBuilder command = new StringBuilder("INSERT INTO Post (ProfileId, PostingDateTime, Content, ThreadTitle, PostLink, Forum, ForumLink) VALUES");
@@ -186,7 +193,6 @@ namespace BoardTracker.Repository.MySql
                     cmd.CommandType = CommandType.Text;
                     cmd.ExecuteNonQuery();
                 }
-
             }
         }
 
