@@ -121,7 +121,7 @@ namespace BoardTracker.BusinessLogic.Tracker
             //log which posts will be checked for updates if it's not an empty profile
             if (lastPostTime != null)
             {
-                logger.Info($"{website.Name} - {profile.Name} - All existing posts which are newer than {postCheckDateTime} will be checked for edits..");
+                logger.Info($"{website.Name} - {profile.Name} - All existing posts which are newer than {postCheckDateTime} will be checked for changes..");
             }
             
             //iterate through posts and add new posts
@@ -139,6 +139,9 @@ namespace BoardTracker.BusinessLogic.Tracker
                         {
                             repository.AddPosts(postsBatch);
                             newPosts += postsBatch.Count;
+
+                            //log progress
+                            logger.Info($"{website.Name} - {profile.Name} - Tracking progress: {newPosts} new posts have been inserted..");
                         }
                         catch (Exception e)
                         {
@@ -167,7 +170,7 @@ namespace BoardTracker.BusinessLogic.Tracker
                 {
                     repository.UpsertPost(post);
                 }
-                //stop if the posts are too old
+                //stop the tracking rotation if the posts are too old
                 else
                 {
                     break;

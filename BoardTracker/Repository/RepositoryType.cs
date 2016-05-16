@@ -2,7 +2,6 @@
 {
     public enum RepositoryType
     {
-        XML,
         MSSQL,
         MYSQL
     }

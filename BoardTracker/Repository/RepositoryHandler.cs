@@ -9,16 +9,13 @@ namespace BoardTracker.Repository
         /// <summary>
         /// Returns the repository for a specific type of database
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="connectionString"></param>
+        /// <param name="type">The repository type of the database</param>
+        /// <param name="connectionString">The connection string to the database</param>
         /// <returns></returns>
         public static ITrackingRepository GetTrackingRepository(RepositoryType type, string connectionString)
         {
             switch (type)
             {
-                case RepositoryType.XML:
-                    throw new NotImplementedException($"{nameof(RepositoryType.XML)} Repository is not implemented at the moment");
-
                 case RepositoryType.MSSQL:
                     return new TrackingSqlLinq(connectionString);
 

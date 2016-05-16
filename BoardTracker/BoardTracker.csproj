@@ -99,7 +99,6 @@
       <DependentUpon>TrackingDatabase.dbml</DependentUpon>
     </Compile>
     <Compile Include="Repository\MsSql\TrackingSqlLinq.cs" />
-    <Compile Include="Repository\Xml\TrackingXml.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

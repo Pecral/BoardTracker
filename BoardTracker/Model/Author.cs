@@ -2,6 +2,9 @@
 
 namespace BoardTracker.Model
 {
+    /// <summary>
+    /// The author system is currently not implemented.
+    /// </summary>
     public class Author
     {
         [XmlAttribute]

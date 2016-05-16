@@ -69,9 +69,9 @@ namespace BoardTracker
         /// <summary>
         /// Start the tracking process for the configurations with parallelized ForEach
         /// </summary>
-        /// <param name="configs"></param>
-        /// <param name="connectionType"></param>
-        /// <param name="connectionString"></param>
+        /// <param name="configs">All tracking profiles</param>
+        /// <param name="connectionType">The repository type of the database</param>
+        /// <param name="connectionString">The connection string to the database</param>
         public static void StartTracker(List<TrackingConfiguration> configs, RepositoryType connectionType, string connectionString)
         {
             logger.Warn("The tracking will start now!");
@@ -82,11 +82,14 @@ namespace BoardTracker
                 {
                     logger.Info($"Start tracking process for {c.WebsiteConfiguration.Website}({c.WebsiteConfiguration.WebsiteUrl})");
 
+                    //create repository
                     ITrackingRepository repo = RepositoryHandler.GetTrackingRepository(connectionType, connectionString);
                     logger.Info($"{c.WebsiteConfiguration.Website} - Database successfully initialized");
 
+                    //create data provider
                     IDataProvider provider = DataProviderHandler.GetProvider(c.WebsiteConfiguration.DataProviderType);
 
+                    //create and start the tracker
                     Tracker tracker = new Tracker(repo, provider, c);
                     tracker.StartTracking();
                 }
@@ -95,11 +98,6 @@ namespace BoardTracker
                     logger.Error($"Tracking process for website {c.WebsiteConfiguration.Website} cancelled - Exception Message = " + e.Message + "; Inner Message = " + e.InnerException?.Message);
                 }
             });
-        }
-
-        public static string DatePattern()
-        {
-            return DateTime.Now.ToLongTimeString();
         }
     }
 }

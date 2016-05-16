@@ -104,6 +104,7 @@ A profile looks like this:
 
   <!-- The profiles that you want to track..-->
   <trackedProfiles>
+    <!-- Name = Name of the profile, templateKey = The key which is used for the {profile} tag in the template url -->
 	<profile name="Watcher" templateKey="Watcher" />
   </trackedProfiles>
 </trackingConfiguration>

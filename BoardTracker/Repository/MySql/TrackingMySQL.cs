@@ -20,16 +20,10 @@ namespace BoardTracker.Repository.MySql
 
         private readonly string connectionString;
 
-        #region Connection Stuff
-
-
-        #endregion Connection Stuff
-
         /// <summary>
         /// Add posts of a specific author to the database
         /// </summary>
-        /// <param name="posts"></param>
-        /// <param name="profile"></param>
+        /// <param name="posts">The posts that we want to insert</param>
         public void AddPosts(IEnumerable<Post> posts)
         {
             List<Post> smallBulk = new List<Post>();
@@ -43,6 +37,7 @@ namespace BoardTracker.Repository.MySql
                 smallBulk.Add(post);
 
                 //add 5 posts in a batch or add the rest
+                //We can only insert 5 posts in a batch because an exception will be thrown if too much data is sent to the server as a whole
                 if (smallBulk.Count == 5 || number == maxNumber)
                 {
                     AddPostsInSmallBulk(smallBulk);
@@ -52,7 +47,7 @@ namespace BoardTracker.Repository.MySql
         }
 
         /// <summary>
-        /// Att a specific amount of posts jn a batch. Note: An exception will be thrown if too much data is sent as a whole
+        /// Add a specific amount of posts in a batch. Note: An exception will be thrown if too much data is sent
         /// </summary>
         /// <param name="posts"></param>
         private void AddPostsInSmallBulk(IEnumerable<Post> posts)
@@ -93,7 +88,6 @@ namespace BoardTracker.Repository.MySql
                     cmd.CommandType = CommandType.Text;
                     cmd.ExecuteNonQuery();
                 }
-
             }
         }
 
@@ -111,7 +105,7 @@ namespace BoardTracker.Repository.MySql
 
             StringBuilder command = new StringBuilder("INSERT INTO Post (ProfileId, PostingDateTime, Content, ThreadTitle, PostLink, Forum, ForumLink) VALUES (" +
                                     $"{post.ProfileId}," +
-                                    $"{post.ToString()}," +
+                                    $"'{post.PostingDateTime.ToString("o")}'," +
                                     $"{eContent}," +
                                     $"{eThreadTitle}," +
                                     $"{ePostLink}," +
@@ -230,7 +224,6 @@ namespace BoardTracker.Repository.MySql
         /// <summary>
         /// Get the date of the last post of a profile
         /// </summary>
-        /// <param name="website"></param>
         /// <param name="profile"></param>
         /// <returns></returns>
         public DateTime? GetDateOfLastPost(Profile profile)

@@ -148,6 +148,7 @@ namespace BoardTracker.Configuration
                 config.TrackedProfiles = new List<Profile>();
                 var trackedProfilesRoot = configNode.SelectSingleNode("trackedProfiles");
 
+                //create the profiles name/templateKeys
                 config.TrackedProfiles.AddRange(trackedProfilesRoot.SelectNodes("profile")
                     .Cast<XmlNode>()
                     .Select(
